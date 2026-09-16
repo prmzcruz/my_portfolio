@@ -15,11 +15,13 @@ class ProjectCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       clipBehavior: Clip.antiAlias,
-      height: 290,
-      width: 260,
+      height: 316,
+      width: 286,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(18),
         color: CustomColor.bgLight2,
+        border: Border.all(color: CustomColor.border),
+        boxShadow: const [BoxShadow(color: Color(0x33000000), blurRadius: 18, offset: Offset(0, 10))],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -28,24 +30,25 @@ class ProjectCardWidget extends StatelessWidget {
           // project img
           Image.asset(
             project.image,
-            height: 140,
-            width: 260,
+            height: 150,
+            width: 286,
             fit: BoxFit.cover,
           ),
           // title
           Padding(
-            padding: const EdgeInsets.fromLTRB(12, 15, 12, 12),
+            padding: const EdgeInsets.fromLTRB(16, 17, 16, 8),
             child: Text(
               project.title,
               style: const TextStyle(
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w800,
+                fontSize: 16,
                 color: CustomColor.whitePrimary,
               ),
             ),
           ),
           // subtitle
           Padding(
-            padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
             child: Text(
               project.subtitle,
               style: const TextStyle(
@@ -57,22 +60,24 @@ class ProjectCardWidget extends StatelessWidget {
           const Spacer(),
           // footer
           Container(
-            color: CustomColor.bgLight1,
+            color: CustomColor.surface,
             padding: const EdgeInsets.symmetric(
-              horizontal: 12,
-              vertical: 10,
+              horizontal: 16,
+              vertical: 12,
             ),
             child: Row(
               children: [
                 const Text(
-                  "Available on:",
+                  "EXPLORE ON",
                   style: TextStyle(
                     color: CustomColor.yellowSecondary,
                     fontSize: 10,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: 1,
                   ),
                 ),
                 const Spacer(),
-                if (project.iosLink != null)
+                if (project.iosLink?.isNotEmpty ?? false)
                   InkWell(
                     onTap: () {
                       js.context.callMethod("open", [project.iosLink]);
@@ -82,7 +87,7 @@ class ProjectCardWidget extends StatelessWidget {
                       width: 19,
                     ),
                   ),
-                if (project.androidLink != null)
+                if (project.androidLink?.isNotEmpty ?? false)
                   Padding(
                     padding: const EdgeInsets.only(left: 6),
                     child: InkWell(
@@ -95,7 +100,7 @@ class ProjectCardWidget extends StatelessWidget {
                       ),
                     ),
                   ),
-                if (project.webLink != null)
+                if (project.webLink?.isNotEmpty ?? false)
                   Padding(
                     padding: const EdgeInsets.only(left: 6),
                     child: InkWell(
