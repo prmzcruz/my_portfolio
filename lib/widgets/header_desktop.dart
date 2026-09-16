@@ -6,43 +6,31 @@ import '../constants/nav_items.dart';
 import '../styles/style.dart';
 
 class HeaderDesktop extends StatelessWidget {
-  const HeaderDesktop({
-    super.key,
-    required this.onNavMenuTap,
-  });
+  const HeaderDesktop({super.key, required this.onNavMenuTap});
   final Function(int) onNavMenuTap;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 60.0,
-      margin: const EdgeInsets.symmetric(
-        vertical: 10.0,
-        horizontal: 20.0,
-      ),
+      height: 70,
+      margin: const EdgeInsets.symmetric(vertical: 18, horizontal: 32),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       width: double.maxFinite,
       decoration: kHederDecoration,
       child: Row(
         children: [
-          SiteLogo(
-            onTap: () {},
-          ),
+          SiteLogo(onTap: () => onNavMenuTap(0)),
           const Spacer(),
-          for (int i = 0; i < navTitles.length; i++)
+          for (var i = 0; i < navTitles.length; i++)
             Padding(
-              padding: const EdgeInsets.only(right: 20),
+              padding: const EdgeInsets.only(left: 6),
               child: TextButton(
-                onPressed: () {
-                  onNavMenuTap(i);
-                },
-                child: Text(
-                  navTitles[i],
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: CustomColor.whitePrimary,
-                  ),
+                onPressed: () => onNavMenuTap(i),
+                style: TextButton.styleFrom(
+                  foregroundColor: CustomColor.whiteSecondary,
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                 ),
+                child: Text(navTitles[i], style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
               ),
             ),
         ],

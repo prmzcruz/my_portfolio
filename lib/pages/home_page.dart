@@ -79,21 +79,23 @@ class _HomePageState extends State<HomePage> {
               Container(
                 key: navbarKeys[1],
                 width: screenWidth,
-                padding: const EdgeInsets.fromLTRB(25, 20, 25, 60),
+                padding: const EdgeInsets.fromLTRB(25, 72, 25, 82),
                 color: CustomColor.bgLight1,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     // title
                     const Text(
-                      "What I can do",
+                      "My toolkit",
                       style: TextStyle(
-                        fontSize: 24,
+                        fontSize: 32,
                         fontWeight: FontWeight.bold,
                         color: CustomColor.whitePrimary,
                       ),
                     ),
-                    const SizedBox(height: 50),
+                    const SizedBox(height: 14),
+                    const Text("A focused toolkit for building reliable digital products.", style: TextStyle(color: CustomColor.whiteSecondary)),
+                    const SizedBox(height: 42),
 
                     // platforms and skills
                     if (constraints.maxWidth >= kMedDesktopWidth)
