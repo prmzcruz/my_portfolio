@@ -12,7 +12,7 @@ class DrawerMobile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: CustomColor.surface,
+      backgroundColor: CustomColor.scaffoldBg,
       child: ListView(
         children: [
           Align(
@@ -44,7 +44,7 @@ class DrawerMobile extends StatelessWidget {
               onTap: () {
                 onNavItemTap(i);
               },
-              leading: Icon(navIcons[i], color: CustomColor.yellowSecondary),
+              leading: Icon(navIcons[i]),
               title: Text(navTitles[i]),
             )
         ],
