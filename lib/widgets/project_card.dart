@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:my_portfolio/utils/project_utils.dart';
-
 import '../constants/colors.dart';
-import 'dart:js' as js;
 
-class ProjectCardWidget extends StatelessWidget {
+class ProjectCardWidget extends StatefulWidget {
   const ProjectCardWidget({
     super.key,
     required this.project,
@@ -12,108 +11,202 @@ class ProjectCardWidget extends StatelessWidget {
   final ProjectUtils project;
 
   @override
+  State<ProjectCardWidget> createState() => _ProjectCardWidgetState();
+}
+
+class _ProjectCardWidgetState extends State<ProjectCardWidget> {
+  bool _isHovered = false;
+
+  Future<void> _launchUrl(String? url) async {
+    if (url == null || url.isEmpty || url == "https://") return;
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      clipBehavior: Clip.antiAlias,
-      height: 290,
-      width: 260,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: CustomColor.bgLight2,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // project img
-          Image.asset(
-            project.image,
-            height: 140,
-            width: 260,
-            fit: BoxFit.cover,
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 250),
+        curve: Curves.easeInOut,
+        transform: _isHovered
+            ? Matrix4.translationValues(0, -6, 0)
+            : Matrix4.identity(),
+        height: 320,
+        width: 280,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          color: CustomColor.bgLight1,
+          border: Border.all(
+            color: _isHovered
+                ? CustomColor.accentCyan.withOpacity(0.6)
+                : CustomColor.whiteSecondary.withOpacity(0.12),
+            width: _isHovered ? 1.5 : 1.0,
           ),
-          // title
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 15, 12, 12),
-            child: Text(
-              project.title,
-              style: const TextStyle(
-                fontWeight: FontWeight.w600,
-                color: CustomColor.whitePrimary,
+          boxShadow: [
+            BoxShadow(
+              color: _isHovered
+                  ? CustomColor.accentCyan.withOpacity(0.2)
+                  : Colors.black.withOpacity(0.2),
+              blurRadius: _isHovered ? 20 : 10,
+              offset: const Offset(0, 8),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Project Image Header with gradient overlay
+            ClipRRect(
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(15)),
+              child: Stack(
+                children: [
+                  Image.asset(
+                    widget.project.image,
+                    height: 150,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
+                  Positioned.fill(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.transparent,
+                            CustomColor.bgLight1.withOpacity(0.9),
+                          ],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ),
-          // subtitle
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+
+            // Title & Description
+            Padding(
+              padding: const EdgeInsets.fromLTRB(14, 8, 14, 4),
               child: Text(
-                project.subtitle,
+                widget.project.title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
-                  fontSize: 12,
-                  color: CustomColor.whiteSecondary,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  color: CustomColor.whitePrimary,
                 ),
               ),
             ),
-          ),
-          const Spacer(),
-          // footer
-          Container(
-            color: CustomColor.bgLight1,
-            padding: const EdgeInsets.symmetric(
-              horizontal: 12,
-              vertical: 10,
-            ),
-            child: Row(
-              children: [
-                const Text(
-                  "Available on:",
-                  style: TextStyle(
-                    color: CustomColor.yellowSecondary,
-                    fontSize: 10,
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 14),
+                child: Text(
+                  widget.project.subtitle,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 12.5,
+                    height: 1.4,
+                    color: CustomColor.whiteSecondary,
                   ),
                 ),
-                const Spacer(),
-                if (project.iosLink != null)
-                  InkWell(
-                    onTap: () {
-                      js.context.callMethod("open", [project.iosLink]);
-                    },
-                    child: Image.asset(
-                      "assets/ios_icon.png",
-                      width: 19,
-                    ),
-                  ),
-                if (project.androidLink != null)
-                  Padding(
-                    padding: const EdgeInsets.only(left: 6),
-                    child: InkWell(
-                      onTap: () {
-                        js.context.callMethod("open", [project.androidLink]);
-                      },
-                      child: Image.asset(
-                        "assets/android_icon.png",
-                        width: 17,
-                      ),
-                    ),
-                  ),
-                if (project.webLink != null)
-                  Padding(
-                    padding: const EdgeInsets.only(left: 6),
-                    child: InkWell(
-                      onTap: () {
-                        js.context.callMethod("open", [project.webLink]);
-                      },
-                      child: Image.asset(
-                        "assets/web_icon.png",
-                        width: 17,
-                      ),
-                    ),
-                  ),
-              ],
+              ),
             ),
-          )
-        ],
+
+            // Footer Availability Bar
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+              decoration: BoxDecoration(
+                color: CustomColor.bgLight2.withOpacity(0.6),
+                borderRadius:
+                    const BorderRadius.vertical(bottom: Radius.circular(15)),
+              ),
+              child: Row(
+                children: [
+                  const Text(
+                    "Platforms:",
+                    style: TextStyle(
+                      color: CustomColor.accentCyan,
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const Spacer(),
+                  if (widget.project.androidLink != null &&
+                      widget.project.androidLink!.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8),
+                      child: InkWell(
+                        onTap: () => _launchUrl(widget.project.androidLink),
+                        borderRadius: BorderRadius.circular(6),
+                        child: Container(
+                          padding: const EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            color: CustomColor.scaffoldBg,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Image.asset(
+                            "assets/android_icon.png",
+                            width: 16,
+                            height: 16,
+                          ),
+                        ),
+                      ),
+                    ),
+                  if (widget.project.iosLink != null &&
+                      widget.project.iosLink!.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8),
+                      child: InkWell(
+                        onTap: () => _launchUrl(widget.project.iosLink),
+                        borderRadius: BorderRadius.circular(6),
+                        child: Container(
+                          padding: const EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            color: CustomColor.scaffoldBg,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Image.asset(
+                            "assets/ios_icon.png",
+                            width: 16,
+                            height: 16,
+                          ),
+                        ),
+                      ),
+                    ),
+                  if (widget.project.webLink != null &&
+                      widget.project.webLink!.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8),
+                      child: InkWell(
+                        onTap: () => _launchUrl(widget.project.webLink),
+                        borderRadius: BorderRadius.circular(6),
+                        child: Container(
+                          padding: const EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            color: CustomColor.scaffoldBg,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Image.asset(
+                            "assets/web_icon.png",
+                            width: 16,
+                            height: 16,
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

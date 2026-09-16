@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import '../constants/colors.dart';
 import '../styles/style.dart';
 import 'site_logo.dart';
 
@@ -11,12 +11,14 @@ class HeaderMobile extends StatelessWidget {
   });
   final VoidCallback? onLogoTap;
   final VoidCallback? onMenuTap;
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 50.0,
-      margin: const EdgeInsets.fromLTRB(40, 5, 20, 5),
-      decoration: kHederDecoration,
+      height: 58.0,
+      margin: const EdgeInsets.fromLTRB(16, 10, 16, 10),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      decoration: kHeaderDecoration,
       child: Row(
         children: [
           SiteLogo(
@@ -25,9 +27,12 @@ class HeaderMobile extends StatelessWidget {
           const Spacer(),
           IconButton(
             onPressed: onMenuTap,
-            icon: const Icon(Icons.menu),
+            icon: const Icon(
+              Icons.menu_rounded,
+              color: CustomColor.whitePrimary,
+              size: 26,
+            ),
           ),
-          const SizedBox(width: 15),
         ],
       ),
     );
