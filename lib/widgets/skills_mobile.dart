@@ -1,7 +1,62 @@
 import 'package:flutter/material.dart';
+
 import '../constants/colors.dart';
 import '../constants/skill_items.dart';
 
-class SkillsMobile extends StatelessWidget { const SkillsMobile({super.key}); @override Widget build(BuildContext context) => ConstrainedBox(constraints: const BoxConstraints(maxWidth: 500), child: Column(children: [Wrap(spacing: 10, runSpacing: 10, children: [for (final item in platformItems) _platform(item)]), const SizedBox(height: 34), Wrap(spacing: 9, runSpacing: 9, alignment: WrapAlignment.center, children: [for (final item in skillItems) _skill(item)])]));
-Widget _platform(Map item) => Container(width: 145, padding: const EdgeInsets.all(13), decoration: BoxDecoration(color: CustomColor.bgLight2, borderRadius: BorderRadius.circular(14), border: Border.all(color: CustomColor.border)), child: Row(mainAxisSize: MainAxisSize.min, children: [Image.asset(item['img'], width: 25), const SizedBox(width: 8), Expanded(child: Text(item['title'], style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700)))]));
-Widget _skill(Map item) => Container(padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 8), decoration: BoxDecoration(color: CustomColor.surface, border: Border.all(color: CustomColor.border), borderRadius: BorderRadius.circular(11)), child: Row(mainAxisSize: MainAxisSize.min, children: [Image.asset(item['img'], width: 20), const SizedBox(width: 7), Text(item['title'], style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600))])); }
+class SkillsMobile extends StatelessWidget {
+  const SkillsMobile({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ConstrainedBox(
+      constraints: const BoxConstraints(
+        maxWidth: 500.0,
+      ),
+      child: Column(
+        children: [
+          // platforms
+          for (int i = 0; i < platformItems.length; i++)
+            Container(
+              margin: const EdgeInsets.only(bottom: 5.0),
+              width: double.maxFinite,
+              decoration: BoxDecoration(
+                color: CustomColor.bgLight2,
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              child: ListTile(
+                contentPadding: const EdgeInsets.symmetric(
+                  vertical: 10.0,
+                  horizontal: 20.0,
+                ),
+                leading: Image.asset(
+                  platformItems[i]["img"],
+                  width: 26.0,
+                ),
+                title: Text(platformItems[i]["title"]),
+              ),
+            ),
+          const SizedBox(height: 50),
+
+          // skills
+          Wrap(
+            spacing: 10.0,
+            runSpacing: 10.0,
+            alignment: WrapAlignment.center,
+            children: [
+              for (int i = 0; i < skillItems.length; i++)
+                Chip(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 12.0,
+                    horizontal: 16.0,
+                  ),
+                  backgroundColor: CustomColor.bgLight2,
+                  label: Text(skillItems[i]["title"]),
+                  avatar: Image.asset(skillItems[i]["img"]),
+                ),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+}

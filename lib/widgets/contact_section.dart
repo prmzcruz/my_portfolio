@@ -21,14 +21,6 @@ class _ContactSectionState extends State<ContactSection> {
   final TextEditingController _messageController = TextEditingController();
 
 
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _emailController.dispose();
-    _messageController.dispose();
-    super.dispose();
-  }
-
   void sendEmail() {
     final String name = _nameController.text;
     final String email = _emailController.text;
@@ -45,26 +37,25 @@ class _ContactSectionState extends State<ContactSection> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(25, 76, 25, 76),
+      padding: const EdgeInsets.fromLTRB(25, 20, 25, 60),
       color: CustomColor.bgLight1,
       child: Column(
         children: [
           // title
           const Text(
-            "Let’s create something great",
+            "Get in touch",
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: 30,
+              fontSize: 24,
               color: CustomColor.whitePrimary,
             ),
           ),
 
-          const SizedBox(height: 12),
-          const Text("Have a project in mind? I’d love to hear about it.", style: TextStyle(color: CustomColor.whiteSecondary)),
-          const SizedBox(height: 38),
+          const SizedBox(height: 50),
           ConstrainedBox(
             constraints: const BoxConstraints(
               maxWidth: 700,
+              maxHeight: 100,
             ),
             child: LayoutBuilder(
               builder: (context, constraints) {
@@ -99,7 +90,7 @@ class _ContactSectionState extends State<ContactSection> {
               width: double.maxFinite,
               child: ElevatedButton(
                 onPressed: sendEmail,
-                child: const Text("Send message"),
+                child: const Text("Get in touch"),
               ),
             ),
           ),
