@@ -1,28 +1,69 @@
 import 'package:flutter/material.dart';
 
 import '../constants/colors.dart';
-import 'main_desktop.dart';
 
 class MainMobile extends StatelessWidget {
   const MainMobile({super.key, required this.onNavMenuTop});
+
   final Function(int) onNavMenuTop;
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
+    final screenSize = MediaQuery.of(context).size;
+    final screenHeight = screenSize.height;
+    final screenWidth = screenSize.width;
+
     return Container(
-      margin: const EdgeInsets.fromLTRB(26, 38, 26, 62),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Center(child: Container(width: width * .76, decoration: BoxDecoration(borderRadius: BorderRadius.circular(28), gradient: const LinearGradient(colors: [Color(0xFF263B67), Color(0xFF121B34)]), border: Border.all(color: CustomColor.border)), child: ClipRRect(borderRadius: BorderRadius.circular(27), child: Image.asset('assets/my_flutter_avatar.png')))),
-        const SizedBox(height: 34),
-        const HeroEyebrow(),
-        const SizedBox(height: 18),
-        const Text('I build polished\nmobile experiences.', style: TextStyle(fontSize: 38, height: 1.1, fontWeight: FontWeight.w900, letterSpacing: -1.2)),
-        const SizedBox(height: 16),
-        const Text('Flutter developer crafting fast, thoughtful products that feel as good as they function.', style: TextStyle(color: CustomColor.whiteSecondary, fontSize: 16, height: 1.55)),
-        const SizedBox(height: 28),
-        SizedBox(width: double.infinity, child: ElevatedButton.icon(onPressed: () => onNavMenuTop(3), icon: const Icon(Icons.send_rounded, size: 18), label: const Text('Let’s work together'))),
-      ]),
+      margin: const EdgeInsets.symmetric(
+        horizontal: 40.0,
+        vertical: 30.0,
+      ),
+      height: screenHeight,
+      constraints: const BoxConstraints(
+        minHeight: 560.0,
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // avatar img
+          ShaderMask(
+            shaderCallback: (bounds) {
+              return LinearGradient(colors: [
+                CustomColor.scaffoldBg.withOpacity(0.6),
+                CustomColor.scaffoldBg.withOpacity(0.6),
+              ]).createShader(bounds);
+            },
+            blendMode: BlendMode.srcATop,
+            child: Image.asset(
+              "assets/my_flutter_avatar.png",
+              width: screenWidth,
+            ),
+          ),
+          const SizedBox(height: 30),
+          // intro message
+          const Text(
+            "Hi,\nI'm PREMKUMAR\nA Flutter Developer",
+            style: TextStyle(
+              fontSize: 24,
+              height: 1.5,
+              fontWeight: FontWeight.bold,
+              color: CustomColor.whitePrimary,
+            ),
+          ),
+          const SizedBox(height: 15),
+          // contact btn
+          SizedBox(
+            width: 190.0,
+            child: ElevatedButton(
+              onPressed: () {
+                onNavMenuTop(3);
+              },
+              child: const Text("Get in touch"),
+            ),
+          )
+        ],
+      ),
     );
   }
 }
